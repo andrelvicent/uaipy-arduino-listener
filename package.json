@@ -1,0 +1,19 @@
+{
+  "name": "serial-listener",
+  "version": "1.0.0",
+  "description": "script to read serial port",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node main.js"
+  },
+  "author": "uaipy team",
+  "license": "ISC",
+  "dependencies": {
+    "serialport": "^10.4.0"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.4"
+  }
+}
