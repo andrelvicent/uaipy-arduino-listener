@@ -2,10 +2,10 @@
   "name": "serial-listener",
   "version": "1.0.0",
   "description": "script to read serial port",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/main.js"
+    "start": "node src/application/main.js"
   },
   "author": "uaipy team",
   "license": "ISC",
