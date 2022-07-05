@@ -3,6 +3,7 @@ const fs = require('fs');
 const { ReadlineParser } = require('@serialport/parser-readline');
 const axios = require('axios').default;
 
+const dataLake = './src/infra/dataLake.txt';
 const storageName = './src/infra/dataStorage.txt';
 const pathToSerialPort = 'COM5';
 const serialPortBaudRate = 9600;
@@ -41,6 +42,9 @@ function addToStorage (newRecord) {
     fs.appendFile(storageName, newRecord, (error) => {
         if(error) print(error);
     });
+    fs.appendFile(dataLake, newRecord, (error) => {
+        if(error) print(error);
+    });
 }
 
 function getAll () {
@@ -48,23 +52,27 @@ function getAll () {
     return iftmData;
 }
 
+function clearArray () {
+    fs.writeFile(storageName, '', (error) => {
+        if(error) print(error);
+    });
+}
+
 function adaptToCloud (dataSet) { 
-    const newArray = "{\"data\": [" + dataSet + "{}" + "]}";
-    console.log(newArray);
-    let response = [];
-    const dataParser = JSON.parse(newArray);
-    const vetor = dataParser.data;
-    const lastPosition = vetor.length - 1;
-    for (var i = lastPosition; i <= (lastPosition - 10); i--) {
-        console.log("****"+lastPosition+"****");
-        response.push(vetor[i]);
-     }
-    return newArray;
+    const response = dataSet;
+    return response;
 }
 
 function sendToServer (dataSet) {
-    axios.post('http://localhost:3000/api/iftm/', dataSet)
+    axios.post('https://trem-do-mundo-core.herokuapp.com/api/iftm/', 
+        dataSet,
+        { 
+            headers: {
+                Authorization:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYTNlYmI4ODYtYjg1MS00MTc2LTkyZTAtMGExZDhlM2FhOTRiIiwiaWF0IjoxNjU2OTg0MTE4LCJleHAiOjE2NTY5ODc3MTh9.cNTzRpB-j_Ze0BzYZslY4a3YviryHhek5BBuZeT6Ho4'
+            }
+        })
       .then(function (response) {
+        clearArray();
         console.log(response);
       })
       .catch(function (error) {
